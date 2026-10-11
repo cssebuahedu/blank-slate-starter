@@ -18,6 +18,7 @@ import {
   Building2,
   UserCog,
   Users,
+  KeyRound,
 } from "lucide-react";
 
 export const navigationGroups = [
@@ -148,6 +149,7 @@ export const navigationGroups = [
     items: [
       { title: "Admin Dashboard", path: "/admin", icon: UserCog, description: "Ringkasan administrasi pengguna dan organisasi platform." },
       { title: "Manajemen Pengguna", path: "/admin/users", icon: Users, description: "Kelola akun, peran, dan status pengguna demo." },
+      { title: "Peran & Izin", path: "/admin/permissions", icon: KeyRound, description: "Matriks izin akses demo untuk setiap peran." },
     ],
   },
 ] as const;

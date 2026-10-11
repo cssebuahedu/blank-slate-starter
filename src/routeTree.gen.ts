@@ -17,6 +17,7 @@ import { Route as KnowledgeRouteImport } from './routes/knowledge'
 import { Route as SigninRouteImport } from './routes/signin'
 import { Route as SignupRouteImport } from './routes/signup'
 import { Route as AdminIndexRouteImport } from './routes/admin.index'
+import { Route as AdminPermissionsRouteImport } from './routes/admin.permissions'
 import { Route as AdminUsersRouteImport } from './routes/admin.users'
 import { Route as AppIndexRouteImport } from './routes/app.index'
 import { Route as AppAiConsultationRouteImport } from './routes/app.ai-consultation'
@@ -87,6 +88,11 @@ const SignupRoute = SignupRouteImport.update({
 const AdminIndexRoute = AdminIndexRouteImport.update({
   id: '/',
   path: '/',
+  getParentRoute: () => AdminRoute,
+} as any)
+const AdminPermissionsRoute = AdminPermissionsRouteImport.update({
+  id: '/permissions',
+  path: '/permissions',
   getParentRoute: () => AdminRoute,
 } as any)
 const AdminUsersRoute = AdminUsersRouteImport.update({
@@ -255,6 +261,7 @@ export interface FileRoutesByFullPath {
   '/knowledge': typeof KnowledgeRouteWithChildren
   '/signin': typeof SigninRoute
   '/signup': typeof SignupRoute
+  '/admin/permissions': typeof AdminPermissionsRoute
   '/admin/users': typeof AdminUsersRoute
   '/app/ai-consultation': typeof AppAiConsultationRoute
   '/app/assistant': typeof AppAssistantRoute
@@ -293,6 +300,7 @@ export interface FileRoutesByTo {
   '/explore': typeof ExploreRoute
   '/signin': typeof SigninRoute
   '/signup': typeof SignupRoute
+  '/admin/permissions': typeof AdminPermissionsRoute
   '/admin/users': typeof AdminUsersRoute
   '/app/ai-consultation': typeof AppAiConsultationRoute
   '/app/assistant': typeof AppAssistantRoute
@@ -331,6 +339,7 @@ export interface FileRoutesById {
   '/knowledge': typeof KnowledgeRouteWithChildren
   '/signin': typeof SigninRoute
   '/signup': typeof SignupRoute
+  '/admin/permissions': typeof AdminPermissionsRoute
   '/admin/users': typeof AdminUsersRoute
   '/app/ai-consultation': typeof AppAiConsultationRoute
   '/app/assistant': typeof AppAssistantRoute
@@ -374,6 +383,7 @@ export interface FileRouteTypes {
     | '/knowledge'
     | '/signin'
     | '/signup'
+    | '/admin/permissions'
     | '/admin/users'
     | '/app/ai-consultation'
     | '/app/assistant'
@@ -412,6 +422,7 @@ export interface FileRouteTypes {
     | '/explore'
     | '/signin'
     | '/signup'
+    | '/admin/permissions'
     | '/admin/users'
     | '/app/ai-consultation'
     | '/app/assistant'
@@ -449,6 +460,7 @@ export interface FileRouteTypes {
     | '/knowledge'
     | '/signin'
     | '/signup'
+    | '/admin/permissions'
     | '/admin/users'
     | '/app/ai-consultation'
     | '/app/assistant'
@@ -549,6 +561,13 @@ declare module '@tanstack/react-router' {
       path: '/'
       fullPath: '/admin/'
       preLoaderRoute: typeof AdminIndexRouteImport
+      parentRoute: typeof AdminRoute
+    }
+    '/admin/permissions': {
+      id: '/admin/permissions'
+      path: '/permissions'
+      fullPath: '/admin/permissions'
+      preLoaderRoute: typeof AdminPermissionsRouteImport
       parentRoute: typeof AdminRoute
     }
     '/admin/users': {
@@ -772,11 +791,13 @@ declare module '@tanstack/react-router' {
 }
 
 interface AdminRouteChildren {
+  AdminPermissionsRoute: typeof AdminPermissionsRoute
   AdminUsersRoute: typeof AdminUsersRoute
   AdminIndexRoute: typeof AdminIndexRoute
 }
 
 const AdminRouteChildren: AdminRouteChildren = {
+  AdminPermissionsRoute: AdminPermissionsRoute,
   AdminUsersRoute: AdminUsersRoute,
   AdminIndexRoute: AdminIndexRoute,
 }
