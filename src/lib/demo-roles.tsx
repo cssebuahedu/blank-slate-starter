@@ -1,4 +1,4 @@
-import { createContext, useContext, useState, type ReactNode } from "react";
+import { createContext, useContext, useSyncExternalStore, type ReactNode } from "react";
 import { navigationItems } from "./grazu-navigation";
 
 // Presentation permissions only: never use these rules as real authorization.
@@ -22,6 +22,7 @@ export function isDemoRole(value: string): value is DemoRole {
 
 export function canAccessDemoRoute(role: DemoRole, pathname: string): boolean {
   const path = pathname.replace(/\/$/, "") || "/";
+  if (path === "/admin" || path.startsWith("/admin/")) return role === "superadmin";
   if (path !== "/app" && !path.startsWith("/app/")) return true;
   if (path === "/app/ai-consultation") return true; // Compatibility redirect.
   // Client-only onboarding and organization pages (organization data belongs to the client role).
@@ -40,8 +41,13 @@ const DemoRoleContext = createContext<{
   setRole: (role: DemoRole) => void;
 } | null>(null);
 
+let currentRole: DemoRole = "superadmin";
+const roleListeners = new Set<() => void>();
+const setRole = (r: DemoRole) => { currentRole = r; roleListeners.forEach((l) => l()); };
+
 export function DemoRoleProvider({ children }: { children: ReactNode }) {
-  const [role, setRole] = useState<DemoRole>("superadmin");
+  // Module-level so the chosen role survives moving between the /app and /admin shells.
+  const role = useSyncExternalStore((l) => (roleListeners.add(l), () => roleListeners.delete(l)), () => currentRole, () => "superadmin" as DemoRole);
   return <DemoRoleContext.Provider value={{ role, setRole }}>{children}</DemoRoleContext.Provider>;
 }
 

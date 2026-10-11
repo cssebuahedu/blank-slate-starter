@@ -16,6 +16,8 @@ import {
   Settings,
   Headset,
   Building2,
+  UserCog,
+  Users,
 } from "lucide-react";
 
 export const navigationGroups = [
@@ -139,6 +141,13 @@ export const navigationGroups = [
         icon: Settings,
         description: "Pengaturan platform dan preferensi organisasi.",
       },
+    ],
+  },
+  {
+    label: "Administrasi",
+    items: [
+      { title: "Admin Dashboard", path: "/admin", icon: UserCog, description: "Ringkasan administrasi pengguna dan organisasi platform." },
+      { title: "Manajemen Pengguna", path: "/admin/users", icon: Users, description: "Kelola akun, peran, dan status pengguna demo." },
     ],
   },
 ] as const;

@@ -10,11 +10,14 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as AdminRouteImport } from './routes/admin'
 import { Route as AppRouteImport } from './routes/app'
 import { Route as ExploreRouteImport } from './routes/explore'
 import { Route as KnowledgeRouteImport } from './routes/knowledge'
 import { Route as SigninRouteImport } from './routes/signin'
 import { Route as SignupRouteImport } from './routes/signup'
+import { Route as AdminIndexRouteImport } from './routes/admin.index'
+import { Route as AdminUsersRouteImport } from './routes/admin.users'
 import { Route as AppIndexRouteImport } from './routes/app.index'
 import { Route as AppAiConsultationRouteImport } from './routes/app.ai-consultation'
 import { Route as AppAssistantRouteImport } from './routes/app.assistant'
@@ -51,6 +54,11 @@ const IndexRoute = IndexRouteImport.update({
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AdminRoute = AdminRouteImport.update({
+  id: '/admin',
+  path: '/admin',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const AppRoute = AppRouteImport.update({
   id: '/app',
   path: '/app',
@@ -75,6 +83,16 @@ const SignupRoute = SignupRouteImport.update({
   id: '/signup',
   path: '/signup',
   getParentRoute: () => rootRouteImport,
+} as any)
+const AdminIndexRoute = AdminIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => AdminRoute,
+} as any)
+const AdminUsersRoute = AdminUsersRouteImport.update({
+  id: '/users',
+  path: '/users',
+  getParentRoute: () => AdminRoute,
 } as any)
 const AppIndexRoute = AppIndexRouteImport.update({
   id: '/',
@@ -231,11 +249,13 @@ const AppRedTeamingRunsIdRoute = AppRedTeamingRunsIdRouteImport.update({
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/admin': typeof AdminRouteWithChildren
   '/app': typeof AppRouteWithChildren
   '/explore': typeof ExploreRoute
   '/knowledge': typeof KnowledgeRouteWithChildren
   '/signin': typeof SigninRoute
   '/signup': typeof SignupRoute
+  '/admin/users': typeof AdminUsersRoute
   '/app/ai-consultation': typeof AppAiConsultationRoute
   '/app/assistant': typeof AppAssistantRoute
   '/app/compliance': typeof AppComplianceRouteWithChildren
@@ -251,6 +271,7 @@ export interface FileRoutesByFullPath {
   '/app/settings': typeof AppSettingsRoute
   '/app/use-cases': typeof AppUseCasesRouteWithChildren
   '/knowledge/$slug': typeof KnowledgeSlugRoute
+  '/admin/': typeof AdminIndexRoute
   '/app/': typeof AppIndexRoute
   '/knowledge/': typeof KnowledgeIndexRoute
   '/app/analytics/adoption': typeof AppAnalyticsAdoptionRoute
@@ -272,6 +293,7 @@ export interface FileRoutesByTo {
   '/explore': typeof ExploreRoute
   '/signin': typeof SigninRoute
   '/signup': typeof SignupRoute
+  '/admin/users': typeof AdminUsersRoute
   '/app/ai-consultation': typeof AppAiConsultationRoute
   '/app/assistant': typeof AppAssistantRoute
   '/app/ethics': typeof AppEthicsRoute
@@ -283,6 +305,7 @@ export interface FileRoutesByTo {
   '/app/risk': typeof AppRiskRoute
   '/app/settings': typeof AppSettingsRoute
   '/knowledge/$slug': typeof KnowledgeSlugRoute
+  '/admin': typeof AdminIndexRoute
   '/app': typeof AppIndexRoute
   '/knowledge': typeof KnowledgeIndexRoute
   '/app/analytics/adoption': typeof AppAnalyticsAdoptionRoute
@@ -302,11 +325,13 @@ export interface FileRoutesByTo {
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/admin': typeof AdminRouteWithChildren
   '/app': typeof AppRouteWithChildren
   '/explore': typeof ExploreRoute
   '/knowledge': typeof KnowledgeRouteWithChildren
   '/signin': typeof SigninRoute
   '/signup': typeof SignupRoute
+  '/admin/users': typeof AdminUsersRoute
   '/app/ai-consultation': typeof AppAiConsultationRoute
   '/app/assistant': typeof AppAssistantRoute
   '/app/compliance': typeof AppComplianceRouteWithChildren
@@ -322,6 +347,7 @@ export interface FileRoutesById {
   '/app/settings': typeof AppSettingsRoute
   '/app/use-cases': typeof AppUseCasesRouteWithChildren
   '/knowledge/$slug': typeof KnowledgeSlugRoute
+  '/admin/': typeof AdminIndexRoute
   '/app/': typeof AppIndexRoute
   '/knowledge/': typeof KnowledgeIndexRoute
   '/app/analytics/adoption': typeof AppAnalyticsAdoptionRoute
@@ -342,11 +368,13 @@ export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
+    | '/admin'
     | '/app'
     | '/explore'
     | '/knowledge'
     | '/signin'
     | '/signup'
+    | '/admin/users'
     | '/app/ai-consultation'
     | '/app/assistant'
     | '/app/compliance'
@@ -362,6 +390,7 @@ export interface FileRouteTypes {
     | '/app/settings'
     | '/app/use-cases'
     | '/knowledge/$slug'
+    | '/admin/'
     | '/app/'
     | '/knowledge/'
     | '/app/analytics/adoption'
@@ -383,6 +412,7 @@ export interface FileRouteTypes {
     | '/explore'
     | '/signin'
     | '/signup'
+    | '/admin/users'
     | '/app/ai-consultation'
     | '/app/assistant'
     | '/app/ethics'
@@ -394,6 +424,7 @@ export interface FileRouteTypes {
     | '/app/risk'
     | '/app/settings'
     | '/knowledge/$slug'
+    | '/admin'
     | '/app'
     | '/knowledge'
     | '/app/analytics/adoption'
@@ -412,11 +443,13 @@ export interface FileRouteTypes {
   id:
     | '__root__'
     | '/'
+    | '/admin'
     | '/app'
     | '/explore'
     | '/knowledge'
     | '/signin'
     | '/signup'
+    | '/admin/users'
     | '/app/ai-consultation'
     | '/app/assistant'
     | '/app/compliance'
@@ -432,6 +465,7 @@ export interface FileRouteTypes {
     | '/app/settings'
     | '/app/use-cases'
     | '/knowledge/$slug'
+    | '/admin/'
     | '/app/'
     | '/knowledge/'
     | '/app/analytics/adoption'
@@ -451,6 +485,7 @@ export interface FileRouteTypes {
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  AdminRoute: typeof AdminRouteWithChildren
   AppRoute: typeof AppRouteWithChildren
   ExploreRoute: typeof ExploreRoute
   KnowledgeRoute: typeof KnowledgeRouteWithChildren
@@ -465,6 +500,13 @@ declare module '@tanstack/react-router' {
       path: '/'
       fullPath: '/'
       preLoaderRoute: typeof IndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/admin': {
+      id: '/admin'
+      path: '/admin'
+      fullPath: '/admin'
+      preLoaderRoute: typeof AdminRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/app': {
@@ -501,6 +543,20 @@ declare module '@tanstack/react-router' {
       fullPath: '/signup'
       preLoaderRoute: typeof SignupRouteImport
       parentRoute: typeof rootRouteImport
+    }
+    '/admin/': {
+      id: '/admin/'
+      path: '/'
+      fullPath: '/admin/'
+      preLoaderRoute: typeof AdminIndexRouteImport
+      parentRoute: typeof AdminRoute
+    }
+    '/admin/users': {
+      id: '/admin/users'
+      path: '/users'
+      fullPath: '/admin/users'
+      preLoaderRoute: typeof AdminUsersRouteImport
+      parentRoute: typeof AdminRoute
     }
     '/app/': {
       id: '/app/'
@@ -715,6 +771,18 @@ declare module '@tanstack/react-router' {
   }
 }
 
+interface AdminRouteChildren {
+  AdminUsersRoute: typeof AdminUsersRoute
+  AdminIndexRoute: typeof AdminIndexRoute
+}
+
+const AdminRouteChildren: AdminRouteChildren = {
+  AdminUsersRoute: AdminUsersRoute,
+  AdminIndexRoute: AdminIndexRoute,
+}
+
+const AdminRouteWithChildren = AdminRoute._addFileChildren(AdminRouteChildren)
+
 interface AppComplianceRouteChildren {
   AppComplianceIndexRoute: typeof AppComplianceIndexRoute
   AppComplianceAssessmentsIdRoute: typeof AppComplianceAssessmentsIdRoute
@@ -835,6 +903,7 @@ const KnowledgeRouteWithChildren = KnowledgeRoute._addFileChildren(
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  AdminRoute: AdminRouteWithChildren,
   AppRoute: AppRouteWithChildren,
   ExploreRoute: ExploreRoute,
   KnowledgeRoute: KnowledgeRouteWithChildren,
