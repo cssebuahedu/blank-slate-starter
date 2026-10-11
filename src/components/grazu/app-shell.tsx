@@ -7,16 +7,16 @@ import { Brand } from "./brand";
 import { ProfileMenu } from "./profile-menu";
 import { AssistantLauncher } from "./floating-chat";
 import { navigationGroups, navigationItems } from "@/lib/grazu-navigation";
-import { canAccessDemoRoute, demoRoles, demoRoleIds, isDemoRole, useDemoRole } from "@/lib/demo-roles";
+import { demoRoles, demoRoleIds, isDemoRole, useDemoRole } from "@/lib/demo-roles";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { NotificationCenter } from "./notification-center";
 
 export function AppShell() {
   const [collapsed, setCollapsed] = useState(false);
   const [drawer, setDrawer] = useState(false);
-  const { role, setRole } = useDemoRole();
+  const { role, setRole, can } = useDemoRole();
   const visibleGroups = navigationGroups.map((group) => ({
-    ...group, items: group.items.filter((item) => canAccessDemoRoute(role, item.path)),
+    ...group, items: group.items.filter((item) => can(item.path)),
   })).filter((group) => group.items.length > 0);
   const path = useRouterState({ select: (s) => s.location.pathname.replace(/\/$/, "") || "/" });
   const current =
@@ -136,7 +136,7 @@ export function AppShell() {
           </div>
         </div>
         <main className="mx-auto max-w-[1500px] px-4 py-7 md:px-8 md:py-8">
-          {canAccessDemoRoute(role, path) ? <Outlet /> : (
+          {can(path) ? <Outlet /> : (
             <section className="space-y-4 border-y py-8">
               <h1 className="text-xl font-semibold">Akses tidak tersedia untuk peran demo ini</h1>
               {path.startsWith("/admin") && <p className="text-sm">Halaman administrasi hanya untuk Administrator Utama (simulasi, bukan otorisasi nyata).</p>}
