@@ -21,7 +21,7 @@ export function AppShell() {
   const path = useRouterState({ select: (s) => s.location.pathname.replace(/\/$/, "") || "/" });
   const current =
     navigationItems.find((item) => item.path === path) ??
-    navigationItems.find((item) => item.path !== "/app" && path.startsWith(item.path + "/"));
+    navigationItems.find((item) => item.path !== "/app" && item.path !== "/admin" && path.startsWith(item.path + "/"));
   function SidebarContent({ compact = false }: { compact?: boolean }) {
     return (
       <div className="flex h-full flex-col bg-card">
@@ -139,6 +139,7 @@ export function AppShell() {
           {canAccessDemoRoute(role, path) ? <Outlet /> : (
             <section className="space-y-4 border-y py-8">
               <h1 className="text-xl font-semibold">Akses tidak tersedia untuk peran demo ini</h1>
+              {path.startsWith("/admin") && <p className="text-sm">Halaman administrasi hanya untuk Administrator Utama (simulasi, bukan otorisasi nyata).</p>}
               <p className="text-sm text-muted-foreground">Pilih peran lain atau kembali ke halaman yang tersedia.</p>
               <Button asChild variant="outline"><Link to="/app">Kembali ke Dashboard</Link></Button>
             </section>
